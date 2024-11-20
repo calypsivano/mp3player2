@@ -1,0 +1,53 @@
+#play-button {
+
+    -fx-background-image: url("file:assets/abspielen.png");
+}
+
+#pause-button {
+
+    -fx-background-image: url("file:assets/pause.png");
+}
+
+#next-button {
+
+    -fx-background-image: url("file:assets/nach-vorne.png");
+}
+
+#prev-button {
+
+    -fx-background-image: url("file:assets/ruckwarts.png");
+}
+
+#shuffle-button {
+
+    -fx-background-image: url("file:assets/mischen.png");
+}
+
+#repeat-button {
+
+    -fx-background-image: url("file:assets/repeat.png");
+}
+
+#switch-button {
+
+    -fx-background-image: url("file:assets/optionen.png");
+}
+
+.icon-button{
+    -fx-min-width: 64;
+    -fx-min-height: 64;
+    -fx-background-color: transparent;
+    -fx-background-repeat: no-repeat no-repeat;
+    -fx-background-size: 32 32;
+    -fx-background-position:center;
+}
+
+.icon-button:hover {
+    -fx-border-color: white;
+    -fx-border-style: 1px solid;
+}
+
+.icon-button:active {
+    -fx-border-color: blue;
+    -fx-border-style: 3px solid;
+}

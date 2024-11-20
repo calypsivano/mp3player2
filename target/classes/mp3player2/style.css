@@ -1,0 +1,6 @@
+.playerview {
+    -fx-background-image: url("file:assets/bg04_sky_smol.jpg");
+    -fx-background-size: contain; /* Höhe des Bildes passt sich an die Containerhöhe an */
+    -fx-background-repeat: repeat-x; /* Horizontales Wiederholen des Bildes */
+    -fx-background-position: top center; /* Bild oben links ausrichten */
+}

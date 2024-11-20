@@ -1,0 +1,9 @@
+#EXTM3U
+#EXTINF:123,Artist1 - Song1
+songs/01.mp3
+#EXTINF:234,Artist2 - Song2
+songs/02.mp3
+#EXTINF:345,Artist3 - Song3
+songs/03.mp3
+#EXTINF:456,Artist4 - Song4
+songs/04.mp3
