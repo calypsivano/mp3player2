@@ -38,13 +38,14 @@
     -fx-min-height: 64;
     -fx-background-color: transparent;
     -fx-background-repeat: no-repeat no-repeat;
-    -fx-background-size: 32 32;
+    -fx-background-size: 48 48;
     -fx-background-position:center;
 }
 
 .icon-button:hover {
     -fx-border-color: white;
     -fx-border-style: 1px solid;
+    -fx-border-radius: 4px;
 }
 
 .icon-button:active {

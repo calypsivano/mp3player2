@@ -45,7 +45,11 @@ public class ControlView extends HBox{
 
         this.setSpacing(5);
         this.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(10,20, 10, 20));
+        this.setPadding(new Insets(10,20, 20, 20));
         this.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+    }
+
+    public Button getPlayButton() {
+        return playButton;
     }
 }

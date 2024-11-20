@@ -14,7 +14,7 @@ public class TopPaneView extends VBox {
         // navigation Pane - switchButton + centered title
         StackPane navigationPane = new StackPane();
         navigationPane.setAlignment(Pos.BASELINE_CENTER);
-        navigationPane.setPadding(new Insets(5, 10, 5, 10));
+        navigationPane.setPadding(new Insets(20, 20, 5, 20));
 
         //Switch Button, Ansicht wechseln Align left
         HBox switchPane = new HBox();

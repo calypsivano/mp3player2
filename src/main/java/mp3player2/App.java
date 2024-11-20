@@ -17,8 +17,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mp3player2.presentation.UIComponents.ControlView;
 import mp3player2.presentation.UIComponents.TopPaneView;
+import mp3player2.presentation.Views.PlayerView;
+import mp3player2.presentation.Views.PlayerViewController;
+import mp3player2.*;
+import mp3player2.business.MP3Player;
 
 import java.io.IOException;
+
+import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 
 /**
  * JavaFX App
@@ -27,39 +33,39 @@ public class App extends Application {
 
     Stage primaryStage;
     Scene scene;
-    BorderPane playerView;
-    BorderPane playlistView;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+
+        //MP3Player Instanz erstellen
+        MP3Player player = new MP3Player(new SimpleMinim());
+
+        //Controller und View instanziieren
+        PlayerViewController controllerPlayer = new PlayerViewController(player);
+        scene = new Scene(controllerPlayer.getRootView(),600,750);      //Setzen unsere Scene erstmal auf den Player -> Später zu Willkommenscreen ändern!
         
-        this.playerView = new BorderPane();       //Hauptview Player
-        this.playlistView = new BorderPane();           //Hauptview Playlist
+        this.primaryStage = primaryStage;               //merkt sich unser Fenster
 
-        this.primaryStage = primaryStage;   //merkt sich unser Fenster
-
-        scene = new Scene(playerView,600,750);      //Setzen unsere Scene erstmal auf den Player -> Später zu Willkommenscreen ändern!
+        
         primaryStage.setScene(scene);                //Scene der Stage zuweisen, wir haben eine Szene und eine Stage für die gesamte Anwendung. Roots/Panes ändern sich.
         
-        switchRoot("PLAYER");
-        //PLAYERVIEW
-        ControlView controlView = new ControlView();
-        TopPaneView topPaneView = new TopPaneView();
-
-        playerView.setTop(topPaneView);
-        playerView.setBottom(controlView);
-        playerView.getStyleClass().addAll("playerview");
-        playerView.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-
-        //PLAYLISTVIEW
+        //switchRoot("PLAYER");
+        //PLAYER
+        controllerPlayer.getRootView().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+  
 
         //STAGE
+        primaryStage.setTitle("This is the Playerview.");
+        //Gojo Icon für das Fenster, weil mich das happy macht.
+        Image gojo = new Image(getClass().getResource("assets/gojo.jpg").toExternalForm());
+        primaryStage.getIcons().add(gojo);
+
         primaryStage.setMinWidth(300);
         primaryStage.setMinHeight(400);
-
         primaryStage.show();
     }
 
+    /*
     public void switchRoot(String name) {
         switch(name) {
 
@@ -82,6 +88,8 @@ public class App extends Application {
             break;
         }
     }
+
+     */
 
     public void init() {
 

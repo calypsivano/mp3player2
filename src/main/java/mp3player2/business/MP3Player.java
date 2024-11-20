@@ -30,7 +30,7 @@ public class MP3Player {
         }
     }
 
-    public void playCurrentTrack() {
+    public void play() {
         if (currentTrack != null) {
             audioPlayer.play();
             audioPlayer.play(currentPosition); // Springt zur gespeicherten Position
@@ -63,7 +63,7 @@ public class MP3Player {
             if (nextIndex < currentPlaylist.getTracks().size()) {
                 currentTrack = currentPlaylist.getTracks().get(nextIndex);
                 loadTrack(currentTrack);
-                playCurrentTrack();
+                play();
             }
         }
     }
@@ -76,7 +76,7 @@ public class MP3Player {
         if (previousIndex >= 0) {
             currentTrack = currentPlaylist.getTracks().get(previousIndex);
             loadTrack(currentTrack);
-            playCurrentTrack();
+            play();
         }
     }
 
@@ -89,11 +89,11 @@ public class MP3Player {
         int randomIndex = random.nextInt(currentPlaylist.getTracks().size());
         currentTrack = currentPlaylist.getTracks().get(randomIndex);
         loadTrack(currentTrack);
-        playCurrentTrack();
+        play();
     }
 
     // Angepasste Methode zum Laden des aktuellen Tracks mit "minim.loadMP3File"
-    private void loadTrack(Track track) {
+    public void loadTrack(Track track) {
         if (track != null) {
             this.audioPlayer = minim.loadMP3File(track.getFilePath()); // Lädt den Track über minim
             audioPlayer.setVolume(volume);
@@ -110,4 +110,37 @@ public class MP3Player {
     public boolean isShuffle() {
         return isShuffle;
     }
+
+    public int getTrackLength() {
+        return audioPlayer != null ? audioPlayer.length() : 0;
+    }    
+
+    public Track getCurrentTrack() {
+        return currentTrack;
+    }
+
+    public void setCurrentTrack(Track currentTrack) {
+        this.currentTrack = currentTrack;
+    }
+
+    public Playlist getCurrentPlaylist() {
+        return currentPlaylist;
+    }
+
+    public void setCurrentPlaylist(Playlist currentPlaylist) {
+        this.currentPlaylist = currentPlaylist;
+    }
+
+    public int getCurrentPosition() {
+        return audioPlayer != null ? audioPlayer.position() : 0;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+    
+    public boolean isPlaying() {
+        return audioPlayer != null && audioPlayer.isPlaying();
+    }
+
 }

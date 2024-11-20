@@ -42,7 +42,7 @@ public class ConsoleTestApp {
 
             switch (command.toLowerCase()) {
                 case "play":
-                    player.playCurrentTrack();
+                    player.play();
                     System.out.println("Wiedergabe gestartet: " + player.getCurrentTrackInfo());
                     break;
 
