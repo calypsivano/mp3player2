@@ -52,4 +52,16 @@ public class ControlView extends HBox{
     public Button getPlayButton() {
         return playButton;
     }
+    public Button getPrevButton() {
+        return prevButton;
+    }
+    public Button getShuffleButton() {
+        return shuffleButton;
+    }
+    public Button getNextButton() {
+        return nextButton;
+    }
+    public Button getRepeatButton() {
+        return repeatButton;
+    }
 }

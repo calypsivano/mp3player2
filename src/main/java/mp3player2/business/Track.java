@@ -1,15 +1,18 @@
 package mp3player2.business;
 
+import javafx.scene.control.Label;
+
 public class Track {
     private String title;
     private String artist;
     private String filePath;
     private String coverPath;
 
-    public Track(String title, String artist, String filePath) {
+    public Track(String title, String artist, String filePath, String coverPath) {
         this.title = title;
         this.artist = artist;
         this.filePath = filePath;
+        this.coverPath = coverPath;
     }
 
     public String getTitle() { 
@@ -31,5 +34,6 @@ public class Track {
     public void setCoverPath(String coverPath) {
         this.coverPath = coverPath;       //Muss von M3U Parser gezogen werden
     }
+
 }
 

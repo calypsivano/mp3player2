@@ -18,8 +18,25 @@ public class MP3Player {
     private int currentPosition; // Merkt sich die Wiedergabeposition in Millisekunden
 
     public MP3Player(SimpleMinim minim) {
+
+        // Playlist aus einer M3U-Datei laden (Pfad zur Datei anpassen)
+        Playlist playlist = M3UParser.loadPlaylistFromM3U("/Users/lauramonacolorente/Desktop/studium/EIA/mp3player2/src/main/java/mp3player2/playlist.m3u");
+
+        if (playlist.getTracks().isEmpty()) {
+            System.out.println("Fehler: Keine Tracks in der Playlist geladen.");
+        } else {
+            System.out.println("Tracks in der Playlist geladen:");
+            for (Track track : playlist.getTracks()) {
+                System.out.println(track.getTitle() + " - " + track.getFilePath());
+            }
+        }
+
         this.isShuffle = false;
         this.minim = new SimpleMinim(true);
+
+        // Playlist in den Player laden
+        this.loadPlaylist(playlist);
+
     }
 
     public void loadPlaylist(Playlist playlist) {
@@ -84,6 +101,7 @@ public class MP3Player {
         isShuffle = !isShuffle;
     }
 
+    //Random Funktion ist noch nicht optimal
     private void playRandomTrack() {
         Random random = new Random();
         int randomIndex = random.nextInt(currentPlaylist.getTracks().size());

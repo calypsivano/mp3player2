@@ -19,6 +19,7 @@ import mp3player2.presentation.UIComponents.ControlView;
 import mp3player2.presentation.UIComponents.TopPaneView;
 import mp3player2.presentation.Views.PlayerView;
 import mp3player2.presentation.Views.PlayerViewController;
+import mp3player2.presentation.Views.PlaylistViewController;
 import mp3player2.*;
 import mp3player2.business.MP3Player;
 
@@ -33,6 +34,10 @@ public class App extends Application {
 
     Stage primaryStage;
     Scene scene;
+    boolean swichView = false;
+    BorderPane rootPane;
+    public PlayerViewController controllerPlayer;
+    public PlaylistViewController controllerPlaylist;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -41,21 +46,28 @@ public class App extends Application {
         MP3Player player = new MP3Player(new SimpleMinim());
 
         //Controller und View instanziieren
-        PlayerViewController controllerPlayer = new PlayerViewController(player);
-        scene = new Scene(controllerPlayer.getRootView(),600,750);      //Setzen unsere Scene erstmal auf den Player -> Später zu Willkommenscreen ändern!
-        
-        this.primaryStage = primaryStage;               //merkt sich unser Fenster
+        controllerPlayer = new PlayerViewController(player);
+        controllerPlaylist = new PlaylistViewController(player);
 
+        //Root Erstellen
+        rootPane = new BorderPane();
+        rootPane.setTop(new TopPaneView(this));
+
+        //Setzen als Default PLAYER als View:
+        setView(controllerPlayer.getRootView());
+        scene = new Scene(rootPane,600,750);      //Setzen unsere Scene erstmal auf den Player -> Später zu Willkommenscreen ändern!
         
-        primaryStage.setScene(scene);                //Scene der Stage zuweisen, wir haben eine Szene und eine Stage für die gesamte Anwendung. Roots/Panes ändern sich.
+        this.primaryStage = primaryStage;                       //merkt sich unser Fenster
         
-        //switchRoot("PLAYER");
-        //PLAYER
-        controllerPlayer.getRootView().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        primaryStage.setScene(scene);                           //Scene der Stage zuweisen, wir haben eine Szene und eine Stage für die gesamte Anwendung. Roots/Panes ändern sich.
+        
+        //Style von controller
+        rootPane.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+
   
 
         //STAGE
-        primaryStage.setTitle("This is the Playerview.");
+        primaryStage.setTitle("Welcome to my Player.");
         //Gojo Icon für das Fenster, weil mich das happy macht.
         Image gojo = new Image(getClass().getResource("assets/gojo.jpg").toExternalForm());
         primaryStage.getIcons().add(gojo);
@@ -64,32 +76,38 @@ public class App extends Application {
         primaryStage.setMinHeight(400);
         primaryStage.show();
     }
+    
+    public void setView(Pane newView){
+        rootPane.setCenter(newView);
+    }
 
-    /*
-    public void switchRoot(String name) {
-        switch(name) {
+    public void switchRoot() {
 
-            case "PLAYER":
-            scene.setRoot(playerView);
+        //Default ist Playerview, also beim ersten Switch kommt man zur Playlistview:
+        if (swichView == false) {
+            scene.setRoot(controllerPlayer.getRootView());
+
+            //Nächster Abschnitt funktioniert nicht
             primaryStage.setTitle("This is the Playerview.");
             //Gojo Icon für das Fenster, weil mich das happy macht.
             Image gojo = new Image(getClass().getResource("assets/gojo.jpg").toExternalForm());
             primaryStage.getIcons().add(gojo);
-            break;
 
-            case "PLAYLIST":
-            scene.setRoot(playlistView);
+            swichView = !swichView;
+
+        } else {
+            scene.setRoot(controllerPlaylist.getRootView());
+
+            //Nächster Abschnitt funktioniert nicht
             primaryStage.setTitle("This is the Playlistview.");
             Image geto = new Image(getClass().getResource("assets/geto.jpg").toExternalForm());
             primaryStage.getIcons().add(geto);
-            break;
 
-            default: 
-            break;
+            swichView = !swichView;
         }
+
     }
 
-     */
 
     public void init() {
 

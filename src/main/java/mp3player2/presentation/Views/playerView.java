@@ -10,15 +10,15 @@ public class PlayerView extends BorderPane{
 
     //PLAYERVIEW
         ControlView controlView;
-        TopPaneView topPaneView = new TopPaneView();
+        //TopPaneView topPaneView = new TopPaneView();
 
         public PlayerView(){
             controlView = new ControlView();
-            this.setTop(topPaneView);
+            //this.setTop(topPaneView);
             this.setBottom(controlView);
-            this.getStyleClass().addAll("playerview");
+            this.getStyleClass().addAll("view");
             
-    }
+        }
 
 
 }
