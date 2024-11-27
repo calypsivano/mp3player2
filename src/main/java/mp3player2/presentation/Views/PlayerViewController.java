@@ -2,6 +2,7 @@ package mp3player2.presentation.Views;
 
 import java.io.File;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -31,12 +32,29 @@ public class PlayerViewController {
     private ImageView coverImageView;
     private Slider progressSlider;
     private Label songInformation;
+    //Buttons
+    Button playButton;
+    Button pauseButton;
+    Button prevButton;
+    Button nextButton;
+    Button shuffleButton;
+
+    //vielleicht gibt es hier eine schönere Lösung:
+    private boolean isPlaying = false;
 
     private MP3Player player;
 
     public PlayerViewController(MP3Player player) {
         this.rootView = new PlayerView();
         this.player = player;
+        playButton = rootView.controlView.getPlayButton();
+        pauseButton = rootView.controlView.getPauseButton();
+        prevButton = rootView.controlView.getPrevButton();
+        nextButton = rootView.controlView.getNextButton();
+        shuffleButton = rootView.controlView.getShuffleButton();
+
+        playButton.setId("play-button");
+        pauseButton.setId("pause-button");
 
         //this.controlView = rootView.controlView;
 
@@ -79,23 +97,30 @@ public class PlayerViewController {
         rootView.setCenter(layout);
 
 
-        // Play-Button Aktion
-        Button playButton = rootView.controlView.getPlayButton();
-        playButton.setOnAction(event -> play());
-        rootView.controlView.getPlayButton().setOnAction(event -> play());
+        // Play-Button Aktion + Pause
+        playButton.setOnAction(event -> {
+            if (isPlaying) {
+                playButton.setId("play-button");
+                player.pause();
+                isPlaying = false;
+                System.out.println("ich bin in isPlaying true");
+            } else {
+                playButton.setId("pause-button");
+                play();
+                isPlaying = true;
+                System.out.println("ich bin in isPlaying false");
+            }
+        });
 
         // Next-Button Aktion
-        Button nextButton = rootView.controlView.getNextButton();
         nextButton.setOnAction(event -> nextTrack());
         rootView.controlView.getNextButton().setOnAction(event -> nextTrack());
 
         // Prev-Button Aktion
-        Button prevButton = rootView.controlView.getPrevButton();
         prevButton.setOnAction(event -> previousTrack());
         rootView.controlView.getPrevButton().setOnAction(event -> previousTrack());
 
         // Shuffle-Button Aktion
-        Button shuffleButton = rootView.controlView.getShuffleButton();
         shuffleButton.setOnAction(event -> toggleShuffle());
         rootView.controlView.getShuffleButton().setOnAction(event -> toggleShuffle());
 
@@ -156,8 +181,11 @@ public class PlayerViewController {
     private void updateProgressSlider() {
         new Thread(() -> {
             while (player.isPlaying()) {
-                double progress = (double) player.getCurrentPosition() / player.getTrackLength() * 100;
-                progressSlider.setValue(progress);
+                Platform.runLater(() -> {
+                    double progress = (double) player.getCurrentPosition() / player.getTrackLength() * 100;
+                    progressSlider.setValue(progress);
+                });
+                
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {

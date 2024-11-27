@@ -27,9 +27,6 @@ import java.io.IOException;
 
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 
-/**
- * JavaFX App
- */
 public class App extends Application {
 
     Stage primaryStage;

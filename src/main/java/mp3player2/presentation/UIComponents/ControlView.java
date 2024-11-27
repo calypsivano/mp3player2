@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 public class ControlView extends HBox{
     
     Button playButton;
+    Button pauseButton;
     Button nextButton;
     Button prevButton;
     Button shuffleButton;
@@ -18,7 +19,12 @@ public class ControlView extends HBox{
         
         playButton = new Button();
         playButton.getStyleClass().addAll("icon-button");
-        playButton.setId("play-button");
+        //playButton.setId("play-button");
+
+        pauseButton = new Button();
+        pauseButton.getStyleClass().addAll("icon-button");
+        //pauseButton.setId("pause-button");
+
 
         nextButton = new Button();
         nextButton.getStyleClass().addAll("icon-button");
@@ -51,6 +57,9 @@ public class ControlView extends HBox{
 
     public Button getPlayButton() {
         return playButton;
+    }
+    public Button getPauseButton() {
+        return pauseButton;
     }
     public Button getPrevButton() {
         return prevButton;
