@@ -17,6 +17,7 @@ public class M3UParser {
             String title = null;
             String artist = null;
             String coverPath = null;
+            int trackLength = 0;
     
             while ((line = br.readLine()) != null) {
                 line = line.trim();
@@ -24,9 +25,13 @@ public class M3UParser {
                 if (line.startsWith("#EXTINF")) {
                     String[] info = line.split(",", 2);
                     if (info.length > 1) {
+                        // Extrahiere die Länge und den Titel
                         String[] details = info[1].split(" - ");
                         artist = details.length > 1 ? details[0].trim() : "Unknown Artist";
                         title = details[details.length - 1].trim();
+
+                        // Extrahiere die Länge des Tracks
+                        trackLength = Integer.parseInt(info[0].substring(8)); // Die Zahl nach #EXTINF:
                     }
                 } else if (line.startsWith("#COVER:")) {
                     coverPath = line.substring(7).trim(); // Relativer Pfad aus der M3U-Datei
@@ -40,11 +45,12 @@ public class M3UParser {
                         title != null ? title : trackFile.getName(),
                         artist,
                         trackFile.getAbsolutePath(),
-                        relativeCoverPath // Relativer Pfad wird direkt gespeichert
+                        relativeCoverPath, // Relativer Pfad wird direkt gespeichert
+                        trackLength
                     );
-//TEST
-System.out.println("Track erstellt: " + track.getTitle() + ", Cover: " + track.getCoverPath());
-
+                    
+                    //TEST
+                    System.out.println("Track erstellt: " + track.getTitle() + ", Cover: " + track.getCoverPath()+ ", Länge: " + track.getLength());
     
                     playlist.addTrack(track);
     
@@ -52,6 +58,7 @@ System.out.println("Track erstellt: " + track.getTitle() + ", Cover: " + track.g
                     title = null;
                     artist = null;
                     coverPath = null;
+                    trackLength = 0;
                 }
             }
         } catch (IOException e) {

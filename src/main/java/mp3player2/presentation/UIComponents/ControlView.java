@@ -3,6 +3,7 @@ package mp3player2.presentation.UIComponents;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
@@ -13,18 +14,16 @@ public class ControlView extends HBox{
     Button nextButton;
     Button prevButton;
     Button shuffleButton;
-    Button repeatButton;
+    Button volumeButton;
+    Slider volumeSlider;
 
     public ControlView() {
         
         playButton = new Button();
         playButton.getStyleClass().addAll("icon-button");
-        //playButton.setId("play-button");
 
         pauseButton = new Button();
         pauseButton.getStyleClass().addAll("icon-button");
-        //pauseButton.setId("pause-button");
-
 
         nextButton = new Button();
         nextButton.getStyleClass().addAll("icon-button");
@@ -38,16 +37,23 @@ public class ControlView extends HBox{
         shuffleButton.getStyleClass().addAll("icon-button");
         shuffleButton.setId("shuffle-button");
 
-        repeatButton = new Button();
-        repeatButton.getStyleClass().addAll("icon-button");
-        repeatButton.setId("repeat-button");
+        volumeButton = new Button();
+        volumeButton.getStyleClass().addAll("icon-button");
+        volumeButton.setId("volume-button");
+
+        volumeSlider = new Slider(0, 100, 50); 
+        volumeSlider.setMajorTickUnit(25); 
+        volumeSlider.setMinorTickCount(0); 
+        volumeSlider.setShowTickLabels(true); 
+        volumeSlider.setShowTickMarks(true); 
+        volumeSlider.setPrefWidth(160); 
 
         prevButton.getStyleClass().addAll("button");
         nextButton.getStyleClass().addAll("button");
         shuffleButton.getStyleClass().addAll("button");
-        repeatButton.getStyleClass().addAll("button");
+        volumeButton.getStyleClass().addAll("button");
 
-        this.getChildren().addAll(shuffleButton, prevButton, playButton, nextButton, repeatButton);
+        this.getChildren().addAll(shuffleButton, prevButton, playButton, nextButton, volumeButton,volumeSlider);
 
         this.setSpacing(5);
         this.setAlignment(Pos.CENTER);
@@ -70,7 +76,10 @@ public class ControlView extends HBox{
     public Button getNextButton() {
         return nextButton;
     }
-    public Button getRepeatButton() {
-        return repeatButton;
+    public Button getVolumeButton() {
+        return volumeButton;
+    }
+    public Slider getVolumeSlider() {
+        return volumeSlider;
     }
 }

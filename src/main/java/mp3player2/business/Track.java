@@ -7,12 +7,18 @@ public class Track {
     private String artist;
     private String filePath;
     private String coverPath;
+    private int length;
 
-    public Track(String title, String artist, String filePath, String coverPath) {
+    public Track(String title, String artist, String filePath, String coverPath, int length) {
         this.title = title;
         this.artist = artist;
         this.filePath = filePath;
         this.coverPath = coverPath;
+        this.length = length;
+    }
+
+    public int getLength() {
+        return length;
     }
 
     public String getTitle() { 

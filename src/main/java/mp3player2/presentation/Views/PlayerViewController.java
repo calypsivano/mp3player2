@@ -67,8 +67,18 @@ public class PlayerViewController {
         progressSlider.setMin(0);
         progressSlider.setMax(100);
         progressSlider.setValue(0);
+        progressSlider.maxWidth(500);
         progressSlider.setDisable(false);
         progressSlider.setStyle("-fx-padding: 20px 10px;");
+
+        //Fortschritt
+        progressSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (progressSlider.isValueChanging()) { // Benutzerinteraktion aktiv
+                double newTime = (newValue.doubleValue() / 100) * player.getTrackLength(); // Neue Position berechnen
+                player.setCurrentPosition((int) (newTime * 1000)); // Position in Millisekunden setzen
+                player.monitorTrackProgress();
+            }
+        });          
 
         // Cover-Bild
         StackPane imageContainer = new StackPane();
@@ -92,6 +102,8 @@ public class PlayerViewController {
         // Layout erweitern
         VBox infoBox = new VBox(10, songInformation, progressSlider);
         infoBox.setAlignment(Pos.CENTER);
+        //Stylessss
+        infoBox.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         VBox layout = new VBox(20, imageContainer, infoBox, rootView.controlView);
         layout.setAlignment(Pos.CENTER);
         rootView.setCenter(layout);
@@ -101,14 +113,12 @@ public class PlayerViewController {
         playButton.setOnAction(event -> {
             if (isPlaying) {
                 playButton.setId("play-button");
-                player.pause();
+                pause();
                 isPlaying = false;
-                System.out.println("ich bin in isPlaying true");
             } else {
                 playButton.setId("pause-button");
                 play();
                 isPlaying = true;
-                System.out.println("ich bin in isPlaying false");
             }
         });
 
@@ -126,31 +136,58 @@ public class PlayerViewController {
 
         // Update des Sliders
         updateProgressSlider();
+
+        //Hört ob sich Lieder ändern, um entprechen View anzupassen
+        registerTrackChangeListener();
+
     }
 
     private void play() {
-        //Hier sollte er aber nicht reinspringen, das nur als Default, falls keine Playliste!
+        // Erster Track laden, falls keiner aktiv ist
         if (player.getCurrentTrack() == null) {
             Track track = player.getCurrentPlaylist().getTracks().get(0); // Ersten Track laden
             player.loadTrack(track);
             updateCoverImage(track);
             updateSongInformation(track);
+            progressSlider.setValue(0); // Slider zurücksetzen
         }
+    
         player.play();
         updateCoverImage(player.getCurrentTrack());
         updateSongInformation(player.getCurrentTrack());
+        progressSlider.setValue(0);
+    
+        // Aktualisierung starten
+        updateProgressSlider();
+    }
+
+    private void pause() {
+        player.pause();
+        isPlaying = false;
     }
 
     private void nextTrack() {
         player.nextTrack();
+        if (!isPlaying) {
+            playButton.setId("pause-button");
+            isPlaying = true;
+        }
         updateCoverImage(player.getCurrentTrack());
         updateSongInformation(player.getCurrentTrack());
+        progressSlider.setValue(0);
+        updateProgressSlider();
     }
     
     private void previousTrack() {
         player.previousTrack();
+        if (!isPlaying) {
+            playButton.setId("pause-button");
+            isPlaying = true;
+        }
         updateCoverImage(player.getCurrentTrack());
         updateSongInformation(player.getCurrentTrack());
+        progressSlider.setValue(0);
+        updateProgressSlider();
     }
 
     private void toggleShuffle() {
@@ -162,37 +199,53 @@ public class PlayerViewController {
     }
 
     private void updateCoverImage(Track track) {
-    String coverPath = track.getCoverPath();
-    System.out.println("CoverPath: " + coverPath);
-    if (coverPath != null) {
-        File coverFile = new File(coverPath);
-        System.out.println("Existiert Datei? " + coverFile.exists());
-        Image coverImage = new Image("file:" + coverPath);
-        coverImageView.setImage(coverImage);
-    } else {
-        System.out.println("Kein Cover-Bild gefunden!");
-        Image coverImage = new Image("file:assets/geto.jpg");
-        coverImageView.setImage(coverImage);
+        String coverPath = track.getCoverPath();
+        System.out.println("CoverPath: " + coverPath);
+        if (coverPath != null) {
+            File coverFile = new File(coverPath);
+            System.out.println("Existiert Datei? " + coverFile.exists());
+            Image coverImage = new Image("file:" + coverPath);
+            coverImageView.setImage(coverImage);
+        } else {
+            System.out.println("Kein Cover-Bild gefunden!");
+            Image coverImage = new Image("file:assets/geto.jpg");
+            coverImageView.setImage(coverImage);
+        }
     }
-}
-
-    
 
     private void updateProgressSlider() {
         new Thread(() -> {
             while (player.isPlaying()) {
-                Platform.runLater(() -> {
-                    double progress = (double) player.getCurrentPosition() / player.getTrackLength() * 100;
-                    progressSlider.setValue(progress);
-                });
-                
+                if (!progressSlider.isValueChanging()) { // Nur aktualisieren, wenn Benutzer nicht interagiert
+                    Platform.runLater(() -> {
+                        double currentPosition = player.getCurrentPosition() / 1000.0; // Sekunden
+                        double totalLength = player.getCurrentTrack().getLength(); // Sekunden
+                        //System.out.println("currentPosition: " + currentPosition + "totalLength: " + totalLength);
+                        if (totalLength > 0) {
+                            progressSlider.setValue((currentPosition / totalLength) * 100); // Prozentualer Fortschritt
+                        }
+                    });
+                }
+    
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(500); // Aktualisierung alle 500ms
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    //Falls Track geändert wird, ändern wir die View:
+    private void registerTrackChangeListener() {
+        player.addTrackChangeListener(newTrack -> {
+            Platform.runLater(() -> {
+                updateCoverImage(newTrack);
+                updateSongInformation(newTrack);
+                progressSlider.setValue(0); // Slider zurücksetzen
+                updateProgressSlider();
+            });
+        });
     }
 
     public Pane getRootView() {

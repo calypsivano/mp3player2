@@ -69,8 +69,8 @@ public class App extends Application {
         Image gojo = new Image(getClass().getResource("assets/gojo.jpg").toExternalForm());
         primaryStage.getIcons().add(gojo);
 
-        primaryStage.setMinWidth(300);
-        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(470);
+        primaryStage.setMinHeight(740);
         primaryStage.show();
     }
     
