@@ -47,6 +47,7 @@ public class PlayerViewController {
     public PlayerViewController(MP3Player player) {
         this.rootView = new PlayerView();
         this.player = player;
+        controlView = rootView.controlView;
         playButton = rootView.controlView.getPlayButton();
         pauseButton = rootView.controlView.getPauseButton();
         prevButton = rootView.controlView.getPrevButton();
@@ -55,8 +56,6 @@ public class PlayerViewController {
 
         playButton.setId("play-button");
         pauseButton.setId("pause-button");
-
-        //this.controlView = rootView.controlView;
 
         initialize();
     }
@@ -139,6 +138,9 @@ public class PlayerViewController {
 
         //Hört ob sich Lieder ändern, um entprechen View anzupassen
         registerTrackChangeListener();
+
+        //Volumebar
+        updateVolumeSlider();
 
     }
 
@@ -246,6 +248,24 @@ public class PlayerViewController {
                 updateProgressSlider();
             });
         });
+    }
+
+     private void updateVolumeSlider() {
+        new Thread(() -> {
+            while (true) {
+                Platform.runLater(() -> {
+                    double currentVolume = controlView.volumeSlider.getValue(); // Slider-Wert abfragen
+                    player.setVolume((float) (currentVolume / 100)); // Lautstärke anpassen
+                });
+    
+                try {
+                    Thread.sleep(500); // Aktualisierung alle 500ms
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    break;
+                }
+            }
+        }).start();
     }
 
     public Pane getRootView() {

@@ -88,9 +88,13 @@ public class MP3Player {
 
     public void setVolume(float value) {
         if (audioPlayer != null) {
-            float valuedB = (float) (10*Math.log(value)); //Formel für dezibel i am told
-            audioPlayer.setGain(valuedB); 
-            System.out.println("Volume beträgt " + valuedB + "dB. Glaube ich.");
+            if (value <= 0) {
+                audioPlayer.mute();
+            } else {
+                audioPlayer.unmute();
+                float valuedB = (float) (10*Math.log(value)); //Formel für dezibel i am told
+                audioPlayer.setGain(valuedB); 
+            }
         }
     }
 
@@ -156,6 +160,10 @@ public class MP3Player {
         return "Kein Track geladen.";
     }
 
+    public float getCurrentVolume() {
+        return audioPlayer != null ? audioPlayer.getGain() / 100 : 0.5f; // Standardwert 50%
+    }    
+
     // Überwacht den Fortschritt des Tracks und spielt den nächsten ab, wenn der aktuelle zu Ende ist
     public void monitorTrackProgress() {
         if (isMonitoring) return;
@@ -168,7 +176,7 @@ public class MP3Player {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println(getCurrentPosition() + " // " + currentTrack.getLength());
+                //System.out.println(getCurrentPosition() + " // " + currentTrack.getLength());
                 if ((getCurrentPosition()/1000) >= currentTrack.getLength()) {
                     playNext();
                     break; // Thread beenden

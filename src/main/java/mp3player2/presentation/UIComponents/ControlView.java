@@ -15,7 +15,7 @@ public class ControlView extends HBox{
     Button prevButton;
     Button shuffleButton;
     Button volumeButton;
-    Slider volumeSlider;
+    public Slider volumeSlider;
 
     public ControlView() {
         
@@ -42,6 +42,7 @@ public class ControlView extends HBox{
         volumeButton.setId("volume-button");
 
         volumeSlider = new Slider(0, 100, 50); 
+        volumeSlider.setId("volume-slider");    
         volumeSlider.setMajorTickUnit(25); 
         volumeSlider.setMinorTickCount(0); 
         volumeSlider.setShowTickLabels(true); 
