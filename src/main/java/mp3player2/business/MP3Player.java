@@ -232,6 +232,10 @@ public class MP3Player {
             audioPlayer.cue(position); // Setzt die Wiedergabe an die neue Position
         }
     }
+
+    public void setPossition(int possition) {
+        currentPosition = possition;
+    }
     
     public boolean isPlaying() {
         return audioPlayer != null && audioPlayer.isPlaying();

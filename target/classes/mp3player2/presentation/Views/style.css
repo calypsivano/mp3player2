@@ -18,5 +18,25 @@
 
 .slider {
     -fx-progress-color: #473C8B;
-    -fx-max-width: 600px;
+    -fx-max-width: 1000px;
+}
+
+/*Playlist View - Liste*/
+.list-view {
+    -fx-background-color: #4b73a7;
+    -fx-alignment: center; 
+    -fx-padding: 10px; 
+}
+
+.list-cell {
+    -fx-background-color: #4b73a7;
+    -fx-padding: 5px;
+    -fx-text-fill: white;
+    -fx-border-color: transparent transparent #3f5f90 transparent; 
+    -fx-border-width: 0 0 2px 0; 
+}
+
+.list-cell:hover {
+    -fx-background-color: #b3ccfe;
+    -fx-text-fill: #4b73a7;
 }

@@ -66,7 +66,7 @@ public class PlayerViewController {
         progressSlider.setMin(0);
         progressSlider.setMax(100);
         progressSlider.setValue(0);
-        progressSlider.maxWidth(500);
+        progressSlider.maxWidth(1000);
         progressSlider.setDisable(false);
         progressSlider.setStyle("-fx-padding: 20px 10px;");
 
@@ -83,6 +83,7 @@ public class PlayerViewController {
         StackPane imageContainer = new StackPane();
 
         coverImageView = new ImageView("file:assets/geto.jpg");
+        //Bildgröße festgelegt, weil Skaliertfunktion nicht geklappt hat :((
         coverImageView.setFitWidth(400);
         coverImageView.setFitHeight(400);
 
